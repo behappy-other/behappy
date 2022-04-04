@@ -1,0 +1,97 @@
+server:
+  port: 8088
+spring:
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    ssl: false
+    timeout: 500ms
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: behappy-product
+          uri: lb://behappy-product
+          predicates:
+            - Path=/api/behappy-product/**
+          filters:
+            # - TokenRelay
+            # - RemoveRequestHeader=Cookie, Set-Cookie
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+            # 限流配置(@Deprecated,使用sentinel)
+            # - name: RequestRateLimiter
+            # args:
+            # key-resolver: '#{@remoteAddrKeyResolver}'
+            # redis-rate-limiter.replenishRate: 100
+            # redis-rate-limiter.burstCapacity: 200
+        - id: behappy-basket
+          uri: lb://behappy-basket
+          predicates:
+            - Path=/api/behappy-basket/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: behappy-member
+          uri: lb://behappy-member
+          predicates:
+            - Path=/api/behappy-member/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: behappy-thirdparty
+          uri: lb://behappy-thirdparty
+          predicates:
+            - Path=/api/behappy-thirdparty/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: behappy-basket
+          uri: lb://behappy-basket
+          predicates:
+            - Path=/api/behappy-basket/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: behappy-system
+          uri: lb://behappy-system
+          predicates:
+            - Path=/api/behappy-system/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+redisson:
+  # 线程池数量
+  threads: 16
+  # Netty线程池数量
+  nettyThreads: 32
+  # 传输模式
+  transportMode: "NIO"
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称
+    clientName: springboot-redisson-demo
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 32
+    # 连接池大小
+    connectionPoolSize: 64
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 如果尝试在此限制之内发送成功，则开始启用 timeout 计时。
+    retryAttempts: 3
+    # 命令重试发送时间间隔，单位：毫秒
+    retryInterval: 1500
+    # 发布和订阅连接的最小空闲连接数
+    subscriptionConnectionMinimumIdleSize: 1
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 50
+    # 单个连接最大订阅数量
+    subscriptionsPerConnection: 5
+    # DNS监测时间间隔，单位：毫秒
+    dnsMonitoringInterval: 5000
+snowflake:
+  machine-id: 2
+  data-center-id: 2

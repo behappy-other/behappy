@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: @profiles.active@
+  application:
+    name: @project.artifactId@
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      #      config:
+      #        file-extension: yml
+      #        namespace: 6ec7481c-3a4f-4d23-851a-9d8e6311f291
+      discovery:
+        namespace: d83c21cc-2614-41ea-ad2b-17a4ef3d596f
+        group: behappy
+      username: nacos
+      password: nacos

@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.xiaowu.behappy.common.monitor.service.ApiRequestDurationAnalysisExporter,\
+    org.xiaowu.behappy.common.monitor.service.PrepareRequestMetricsService,\
+    org.xiaowu.behappy.common.monitor.config.PrometheusApiMonitorAspect

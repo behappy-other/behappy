@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: @profiles.active@
+  application:
+    name: @project.artifactId@
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      #      config:
+      #        file-extension: yml
+      #        namespace: c04f898c-79d5-4b73-84e6-d6c4da14a503
+      discovery:
+        # 环境
+        namespace: d83c21cc-2614-41ea-ad2b-17a4ef3d596f
+        # 项目(比如当前项目是behappy电商项目)
+        group: behappy
+      username: nacos
+      password: nacos

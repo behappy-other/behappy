@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.xiaowu</groupId>
+    <artifactId>behappy</artifactId>
+    <version>1.0.0</version>
+    <name>behappy</name>
+    <packaging>pom</packaging>
+    <description>小五-购物平台(学习向)</description>
+
+    <properties>
+        <behappy.version>1.0.0</behappy.version>
+        <!-- alibaba,cloud,springboot,最佳实践版本:https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E-->
+        <spring-boot.version>2.4.2</spring-boot.version>
+        <spring-cloud.version>2020.0.1</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <hutool.version>5.6.4</hutool.version>
+        <mybatis-plus.version>3.4.2</mybatis-plus.version>
+        <!-- <keycloak-spring-boot-starter.version>12.0.1</keycloak-spring-boot-starter.version>-->
+        <elasticsearch.version>7.10.2</elasticsearch.version>
+        <alipay.sdk.java.version>4.11.33.ALL</alipay.sdk.java.version>
+        <alipay.sdk.core.version>4.0.6</alipay.sdk.core.version>
+        <alipay.sdk.oss.version>3.8.0</alipay.sdk.oss.version>
+        <alipay.sdk.dysmsapi.version>1.1.0</alipay.sdk.dysmsapi.version>
+        <redisson.version>3.15.2</redisson.version>
+        <emoji-java.version>4.0.0</emoji-java.version>
+        <cloud.alibaba.oss.version>2.2.0.RELEASE</cloud.alibaba.oss.version>
+        <alibaba.sentinel.version>1.8.0</alibaba.sentinel.version>
+        <alibaba.nacos.version>1.4.1</alibaba.nacos.version>
+        <wx-java.version>4.2.2.B</wx-java.version>
+        <sa-token.version>1.29.0</sa-token.version>
+    </properties>
+
+    <dependencies>
+        <!--bootstrap 启动器-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--Lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!--hutool-core-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <!--hutool-extra-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <!--hutool-json-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-json</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <modules>
+        <module>behappy-common</module>
+        <module>behappy-api</module>
+        <module>behappy-product</module>
+        <module>behappy-gateway</module>
+        <module>behappy-basket</module>
+        <module>behappy-thirdparty</module>
+        <module>behappy-order</module>
+    </modules>
+    <dependencyManagement>
+        <dependencies>
+            <!-- spring boot 依赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring cloud 依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring cloud alibaba 依赖 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--业务模块也放在一起进行管理-->
+            <!-- 核心模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-product</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 核心模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-common-core</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- feign远程调用 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-common-feign</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 监控,Prometheus -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-common-monitor</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- mybatis相关 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-common-mybatis</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 支付相关,支付宝,微信 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-common-pay</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- redis -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-common-redis</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- elasticsearch -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-common-es</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- rabbit mq -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-common-rmq</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- sa-token -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-common-satoken</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- api 公共模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-api-common</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 购物车 api模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-api-basket</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 商品 api模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-api-product</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 认证 api模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-api-auth</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 用户 api模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-api-member</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 用户 api模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-api-thirdparty</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 订单 api模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-api-order</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 库存 api模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-api-ware</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+            <!-- 系统管理 api模块 -->
+            <dependency>
+                <groupId>org.xiaowu</groupId>
+                <artifactId>behappy-api-system</artifactId>
+                <version>${behappy.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <finalName>${project.name}</finalName>
+        <plugins>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <configuration>
+                        <finalName>${project.build.finalName}</finalName>
+                        <layers>
+                            <enabled>true</enabled>
+                        </layers>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+
+    <profiles>
+        <!--使用 mvn clean package -Pprod 进行激活prod环境的配置，否则激活默认环境-->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <!-- 环境标识，需要与配置文件的名称相对应 -->
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <!-- 默认环境 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,100 @@
+server:
+  servlet:
+    context-path: /behappy-thirdparty
+  port: 8083
+aliyun:
+  oss:
+    access-key-id: LTAI5tSYGn17iYuVtg9s43N2
+    bucket: behappy-xiaowu
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-secret: pofiHbYlud1yoxZh6lQJdT9zIJ2io4
+  sms:
+    access-key-id: LTAI4G2h6DW4DCwJN4TWJNbH
+    access-key-secret: OJD6uoCm5Rfn0ZLw9zcBbhzSi6e7jF
+    sign-name: ABC商城
+    template-code: SMS_206546316
+spring:
+  cloud:
+    #使用Spring Cloud LoadBalancer
+    loadbalancer:
+      ribbon:
+        enabled: false
+    sentinel:
+      # https://github.com/alibaba/spring-cloud-alibaba/issues/2322
+      filter:
+        enabled: true
+      transport:
+        # sentinel dashboard的访问地址，根据上面准备工作中启动的实例配置
+        dashboard: localhost:8858
+        # port是在应用对应的机器上启动一个 Http Server，该 Server 会与 Sentinel 控制台做交互。
+        # 比如 Sentinel 控制台添加了1个限流规则，会把规则数据 push 给这个 Http Server 接收，Http Server
+        # 默认这个server端口是从8719开始，如果被占就+1从8720一直到找到空闲的端口为止。
+        port: 8719
+#      datasource:
+#        # 限流规则
+#        flow:
+#          nacos:
+#            # nacos的访问地址，，根据上面准备工作中启动的实例配置
+#            server-addr: ${spring.cloud.nacos.server-addr}
+#            # nacos中存储规则的dataId,这里对于dataId使用了${spring.application.name}变量，这样可以根据应用名来区分不同的规则配置
+#            dataId: ${spring.application.name}-${spring.profiles.active}-sentinel-flow
+#            namespace: ${spring.cloud.nacos.config.namespace}
+#            username: ${spring.cloud.nacos.username}
+#            password: ${spring.cloud.nacos.password}
+#            data-type: json
+#            # 该参数是spring cloud alibaba升级到0.2.2之后增加的配置，用来定义存储的规则类型。所有的规则类型可查看枚举类【org.springframework.cloud.alibaba.sentinel.datasource.RuleType】
+#            rule-type: flow
+#        # 限流规则
+#        degrade:
+#          nacos:
+#            server-addr: ${spring.cloud.nacos.server-addr}
+#            dataId: ${spring.application.name}-${spring.profiles.active}-sentinel-degrade
+#            namespace: ${spring.cloud.nacos.config.namespace}
+#            username: ${spring.cloud.nacos.username}
+#            password: ${spring.cloud.nacos.password}
+#            data-type: json
+#            rule-type: degrade
+#        # 热点参数限流规则
+#        param-flow:
+#          nacos:
+#            server-addr: ${spring.cloud.nacos.server-addr}
+#            dataId: ${spring.application.name}-${spring.profiles.active}-sentinel-param-flow
+#            namespace: ${spring.cloud.nacos.config.namespace}
+#            username: ${spring.cloud.nacos.username}
+#            password: ${spring.cloud.nacos.password}
+#            data-type: json
+#            rule-type: param-flow
+#        # 系统自适应限流
+#        system:
+#          nacos:
+#            server-addr: ${spring.cloud.nacos.server-addr}
+#            dataId: ${spring.application.name}-${spring.profiles.active}-sentinel-system
+#            namespace: ${spring.cloud.nacos.config.namespace}
+#            username: ${spring.cloud.nacos.username}
+#            password: ${spring.cloud.nacos.password}
+#            data-type: json
+#            rule-type: system
+#        # 黑白名单配置
+#        authority:
+#          nacos:
+#            server-addr: ${spring.cloud.nacos.server-addr}
+#            dataId: ${spring.application.name}-${spring.profiles.active}-sentinel-authority
+#            namespace: ${spring.cloud.nacos.config.namespace}
+#            username: ${spring.cloud.nacos.username}
+#            password: ${spring.cloud.nacos.password}
+#            data-type: json
+#            rule-type: authority
+feign:
+  sentinel:
+    enabled: true
+  # feign的httpclient是由添加判断的(feignautoconfi->@conditionalonclass)
+  okhttp:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+snowflake:
+  machine-id: 5
+  data-center-id: 5

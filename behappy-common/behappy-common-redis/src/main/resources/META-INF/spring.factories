@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+   org.xiaowu.behappy.common.redis.config.RedisConfig,\
+   org.xiaowu.behappy.common.redis.config.RedissonConfig,\
+   org.xiaowu.behappy.common.redis.config.RedissonProperties

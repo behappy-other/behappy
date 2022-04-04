@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.xiaowu.common.mybatis.MybatisAutoConfiguration
+

@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.xiaowu.behappy.common.rmq.config.MqConfiguration

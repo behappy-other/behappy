@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xiaowu.behappy.product.mapper.ProdPropMapper">
+    <resultMap id="BaseResultMap" type="org.xiaowu.behappy.product.entity.ProdPropEntity">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="prop_id" jdbcType="BIGINT" property="propId"/>
+        <result column="prop_name" jdbcType="VARCHAR" property="propName"/>
+        <result column="rule" jdbcType="TINYINT" property="rule"/>
+    </resultMap>
+
+    <resultMap id="propAndValueMap" type="org.xiaowu.behappy.product.vo.ProdPropVo">
+        <id column="prop_id" jdbcType="BIGINT" property="propId"/>
+        <result column="prop_name" jdbcType="VARCHAR" property="propName"/>
+        <result column="rule" jdbcType="TINYINT" property="rule"/>
+
+        <collection property="prodPropValues" column="prop_id" javaType="java.util.List"
+                    ofType="org.xiaowu.behappy.product.vo.ProdPropValueVo">
+            <id property="valueId" column="value_id"/>
+            <result property="propValue" column="prop_value"/>
+        </collection>
+    </resultMap>
+
+    <!-- 使用pageHelper进行关联分页时，需要的count sql -->
+    <select id="countPropAndValue" resultType="Long">
+        select count(0) from bh_p_prop
+        where rule = #{prodProp.rule}
+        <if test="prodProp.propName != null and prodProp.propName != ''">
+            and prop_name like concat('%',#{prodProp.propName},'%')
+        </if>
+    </select>
+
+    <select id="listPropAndValue" resultMap="propAndValueMap">
+        SELECT * FROM (
+        select * from bh_p_prop
+        where rule = #{prodProp.rule}
+        <if test="prodProp.propName != null and prodProp.propName != ''">
+            and prop_name like concat('%',#{prodProp.propName},'%')
+        </if>
+        LIMIT #{adapter.begin} , #{adapter.size}
+        ) pp
+        left join bh_p_prop_value ppv
+        on pp.prop_id = ppv.prop_id
+    </select>
+
+</mapper>
