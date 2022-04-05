@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.xiaowu.behappy.product.dto.SkuUploadDto;
 import org.xiaowu.behappy.product.entity.SkuEntity;
 import org.xiaowu.behappy.product.mapper.SkuMapper;
 import org.xiaowu.behappy.product.vo.ShopSkuVo;
@@ -58,5 +59,10 @@ public class SkuService extends ServiceImpl<SkuMapper, SkuEntity> implements ISe
         LambdaQueryWrapper<SkuEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(SkuEntity::getProdId, prodIds);
         remove(queryWrapper);
+    }
+
+    public void insertBatch(Long prodId, List<SkuUploadDto> skuList) {
+        List<SkuEntity> skuEntities = BeanUtil.copyToList(skuList, SkuEntity.class, CopyOptions.create());
+        this.baseMapper.insertBatch(prodId, skuEntities);
     }
 }

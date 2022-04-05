@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xiaowu.behappy.product.mapper.SkuMapper">
+    <resultMap id="BaseResultMap" type="org.xiaowu.behappy.product.entity.SkuEntity">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="sku_id" jdbcType="BIGINT" property="skuId"/>
+        <result column="prod_id" jdbcType="BIGINT" property="prodId"/>
+        <result column="properties" jdbcType="VARCHAR" property="properties"/>
+        <result column="ori_price" jdbcType="DECIMAL" property="oriPrice"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="rec_time" jdbcType="TIMESTAMP" property="recTime"/>
+        <result column="pic" jdbcType="VARCHAR" property="pic"/>
+        <result column="skuName" jdbcType="VARCHAR" property="skuName"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+    </resultMap>
+
+    <insert id="insertBatch">
+        INSERT INTO `bh_p_sku` (
+        `prod_id`,`properties`,`ori_price`,`price`,
+        `update_time`,`rec_time`,`pic`,
+        `sku_name`,`prod_name`,`version`,`status`, `is_delete`
+        )
+        VALUES
+        <foreach collection="skuList" item="sku" separator=",">
+            (
+            #{prodId},#{sku.properties},#{sku.oriPrice},#{sku.price}, NOW(),NOW(), #{sku.pic},
+            #{sku.skuName},#{sku.prodName},0,#{sku.status},0
+            )
+        </foreach>
+    </insert>
+
+</mapper>

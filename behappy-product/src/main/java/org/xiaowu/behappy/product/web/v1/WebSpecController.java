@@ -69,7 +69,7 @@ public class WebSpecController {
      * @param specId
      * @return org.xiaowu.behappy.common.core.util.Response<java.util.List < org.xiaowu.behappy.product.vo.ProdPropValueVo>>
      */
-    @GetMapping("/listSpecValue/{specId}")
+    @GetMapping("/spec-value/{specId}")
     public Response<List<ProdPropValueVo>> listSpecValue(@PathVariable("specId") Long specId) {
         LambdaQueryWrapper<ProdPropValueEntity> queryWrapper = new LambdaQueryWrapper<ProdPropValueEntity>().
                 eq(ProdPropValueEntity::getPropId, specId);

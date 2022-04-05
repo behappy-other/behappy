@@ -3,6 +3,7 @@ package org.xiaowu.behappy.product.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -13,12 +14,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.xiaowu.behappy.product.dto.ProductUploadDto;
+import org.xiaowu.behappy.product.dto.SkuUploadDto;
 import org.xiaowu.behappy.product.entity.ProductEntity;
 import org.xiaowu.behappy.product.entity.SkuEntity;
 import org.xiaowu.behappy.product.mapper.ProductMapper;
 import org.xiaowu.behappy.product.vo.*;
 import org.xiaowu.common.mybatis.base.BaseEntity;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -110,5 +115,51 @@ public class ProdService extends ServiceImpl<ProductMapper, ProductEntity> imple
         removeByIds(prodIds);
         skuService.removeSkuBySkuId(prodIds);
         // todo 删除购物车
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void saveOrUpdate(ProductUploadDto productUploadDto) {
+        ProductEntity productEntity = BeanUtil.copyProperties(productUploadDto, ProductEntity.class);
+        if (ObjectUtil.isNotNull(productEntity.getProdId())) {
+            // 新增
+            if (productEntity.getStatus() != 0) {
+                productEntity.setPutAwayTime(LocalDateTime.now());
+            }
+            this.baseMapper.insert(productEntity);
+            // insert sku
+            if (CollUtil.isNotEmpty(productUploadDto.getSkuList())) {
+                skuService.insertBatch(productEntity.getProdId(), productUploadDto.getSkuList());
+            }
+        } else {
+            ProductEntity dbProduct = this.getById(productUploadDto.getProdId());
+            // 更新
+            if (dbProduct.getStatus() == 0 && productUploadDto.getStatus() == 1) {
+                dbProduct.setPutAwayTime(LocalDateTime.now());
+            }
+            saveOrUpdate(dbProduct);
+            List<SkuEntity> skuEntities = skuService.listById(productUploadDto.getProdId());
+            // 将所有该商品的sku标记为已删除状态
+            List<Long> skuIds = skuEntities.stream().map(SkuEntity::getSkuId).collect(Collectors.toList());
+            skuService.removeByIds(skuIds);
+            List<SkuUploadDto> skuList = productUploadDto.getSkuList();
+            if (CollectionUtil.isEmpty(skuList)) {
+                return;
+            }
+            List<SkuUploadDto> skuEntityList = new ArrayList<>();
+            for (SkuUploadDto skuUploadDto : skuList) {
+                skuUploadDto.setIsDelete(0);
+                // 如果数据库中原有sku就更新，否者就插入
+                if (skuIds.contains(skuUploadDto.getSkuId())) {
+                    SkuEntity skuEntity = BeanUtil.copyProperties(skuUploadDto, SkuEntity.class);
+                    skuService.updateById(skuEntity);
+                } else {
+                    skuEntityList.add(skuUploadDto);
+                }
+            }
+            // 批量插入sku
+            if (CollUtil.isNotEmpty(skuEntityList)) {
+                skuService.insertBatch(productUploadDto.getProdId(), skuEntityList);
+            }
+        }
     }
 }

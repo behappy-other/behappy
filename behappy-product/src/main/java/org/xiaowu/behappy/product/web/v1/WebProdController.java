@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.xiaowu.behappy.common.core.util.Response;
 import org.xiaowu.behappy.product.dto.ProdPageDto;
+import org.xiaowu.behappy.product.dto.ProductUploadDto;
 import org.xiaowu.behappy.product.entity.ProductEntity;
 import org.xiaowu.behappy.product.entity.SkuEntity;
 import org.xiaowu.behappy.product.service.ProdService;
@@ -17,6 +18,7 @@ import org.xiaowu.behappy.product.vo.ProdInfoVo;
 import org.xiaowu.behappy.product.vo.ProductPageVo;
 import org.xiaowu.behappy.product.vo.SkuInfoVo;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +78,19 @@ public class WebProdController {
         List<SkuInfoVo> skuInfoVos = BeanUtil.copyToList(skuList, SkuInfoVo.class, CopyOptions.create());
         prodInfoVo.setSkuList(skuInfoVos);
         return Response.ok(prodInfoVo);
+    }
+
+    /**
+     * 新增/修改
+     * @apiNote 商品上架
+     * @author xiaowu
+     * @param productUploadDto
+     * @return org.xiaowu.behappy.common.core.util.Response<java.lang.Boolean>
+     */
+    @PostMapping
+    public Response<Boolean> saveOrUpdate(@Valid @RequestBody ProductUploadDto productUploadDto) {
+        productService.saveOrUpdate(productUploadDto);
+        return Response.ok(true);
     }
 
 }
