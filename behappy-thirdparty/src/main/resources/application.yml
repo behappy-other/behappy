@@ -4,10 +4,10 @@ server:
   port: 8083
 aliyun:
   oss:
-    access-key-id: LTAI5tSYGn17iYuVtg9s43N2
+    access-key-id: xxx
     bucket: behappy-xiaowu
     endpoint: oss-cn-beijing.aliyuncs.com
-    access-key-secret: pofiHbYlud1yoxZh6lQJdT9zIJ2io4
+    access-key-secret: xxx
   sms:
     access-key-id: LTAI4G2h6DW4DCwJN4TWJNbH
     access-key-secret: OJD6uoCm5Rfn0ZLw9zcBbhzSi6e7jF
